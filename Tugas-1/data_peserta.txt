@@ -1,0 +1,6 @@
+Data Peserta Jabar Coding Camp Golang
+1. Nama: Aloysius Bimo Prayogo
+2. Email: aloysiusbimoprayogo@gmail.com
+3. Sistem Operasi yang digunakan: Windows (terdapat WSL)
+4. Akun Gitlab/Github: aloybimo
+5. Akun Telegram: @aloybimo
