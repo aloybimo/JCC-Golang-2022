@@ -98,8 +98,19 @@ type data interface {
 	tampilData(string) string
 }
 
-func luasPersegi(sisi int, kondisi bool) {
-
+func luasPersegi(sisi int, kondisi bool) interface{} {
+	if sisi != 0 && kondisi == true {
+		var a = sisi*sisi
+		return "luas persegi dengan sisi " + strconv.Itoa(sisi) + " adalah " + strconv.Itoa(a) + " cm"
+	} else if sisi != 0 && kondisi == false {
+		var a = sisi*sisi
+		return a
+	} else if sisi == 0 && kondisi == true {
+		return "Maaf anda belum menginput sisi dari persegi"
+	} else if sisi == 0 && kondisi == false {
+		return nil
+	}
+	return nil
 }
 
 func main() {
@@ -137,6 +148,10 @@ func main() {
 	//soal 3
 	fmt.Println(" ")
 	fmt.Println("Jawaban Soal 3")
+	fmt.Println(luasPersegi(4, true))
+	fmt.Println(luasPersegi(8, false))
+	fmt.Println(luasPersegi(0, true))
+	fmt.Println(luasPersegi(0, false))
 	
 
 	//soal 4
