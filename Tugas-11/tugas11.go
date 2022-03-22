@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"time"
+	"math"
 	"sync"
 	"strconv"
 )
@@ -22,8 +23,38 @@ func getMovies(ch chan string, data ...string) {
 		kirim := strconv.Itoa(i+1)+". "+isi
 		ch <- kirim
 	}
+	close(ch)
 }	
 
+func luasLingkaran(ch chan float64, jariJari int) {
+	luas := math.Pi * math.Pow(float64(jariJari),2)
+	ch <- luas
+}
+
+func kelilingLingkaran(ch chan float64, jariJari int) {
+	keliling := math.Pi * 2 * float64(jariJari)
+	ch <- keliling
+}
+
+func volumeTabung(ch chan float64, jariJari, tinggi int) {
+	volume := math.Pi * math.Pow(float64(jariJari),2) * float64(tinggi)
+	ch <- volume
+}
+
+func luasPersegiPanjang(ch chan int, panjang, lebar int) {
+	luas := panjang*lebar
+	ch <- luas
+}
+
+func kelilingPersegiPanjang(ch chan int, panjang, lebar int) {
+	keliling := 2 * (panjang + lebar)
+	ch <- keliling
+}
+
+func volumeBalok(ch chan int, panjang, lebar, tinggi int) {
+	volume := panjang*lebar*tinggi
+	ch <- volume
+}
 
 func main() {
 	//soal 1
@@ -48,11 +79,67 @@ func main() {
 	//soal 3
 	fmt.Println(" ")
 	fmt.Println("Jawaban Soal 3")
+	start := time.Now()
+	hasil := make(chan float64)
 	
+	go luasLingkaran(hasil, 8)
+	terima := <-hasil
+	fmt.Println(terima)
+	
+	go luasLingkaran(hasil, 14)
+	terima = <-hasil
+	fmt.Println(terima)
+
+	go luasLingkaran(hasil, 20)
+	terima = <-hasil
+	fmt.Println(terima)
+	
+	go kelilingLingkaran(hasil, 8)
+	terima = <-hasil
+	fmt.Println(terima)
+	
+	go kelilingLingkaran(hasil,14)
+	terima = <-hasil
+	fmt.Println(terima)
+	
+	go kelilingLingkaran(hasil,20)
+	terima = <-hasil
+	fmt.Println(terima)
+	
+	go volumeTabung(hasil,8,10)
+	terima = <-hasil
+	fmt.Println(terima)
+	
+	go volumeTabung(hasil,14,10)
+	terima = <-hasil
+	fmt.Println(terima)
+	
+	go volumeTabung(hasil,20,10)
+	terima = <-hasil
+	fmt.Println(terima)
+	
+	now := time.Since(start)
+	fmt.Println(now)
 
 	//soal 4
 	fmt.Println(" ")
 	fmt.Println("Jawaban Soal 4")
-	
+	var chLuas = make(chan int)
+	go luasPersegiPanjang(chLuas, 2,3)
+	var chKeliling = make(chan int)
+	go kelilingPersegiPanjang(chKeliling, 2,3)
+	var chVolume = make(chan int)
+	go volumeBalok(chVolume, 2,3,4)
+
+	for i := 0; i < 3; i++ {
+		select {
+		case luas := <-chLuas:
+		  fmt.Println("Luas :"+strconv.Itoa(luas))
+		case keliling := <-chKeliling:
+		  fmt.Println("Keliling :"+strconv.Itoa(keliling))
+		case volume := <-chVolume:
+			fmt.Println("Volume :"+strconv.Itoa(volume))
+	  	}
+	}
 
 }
