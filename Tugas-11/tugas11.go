@@ -79,7 +79,6 @@ func main() {
 	//soal 3
 	fmt.Println(" ")
 	fmt.Println("Jawaban Soal 3")
-	start := time.Now()
 	hasil := make(chan float64)
 	
 	go luasLingkaran(hasil, 8)
@@ -117,9 +116,6 @@ func main() {
 	go volumeTabung(hasil,20,10)
 	terima = <-hasil
 	fmt.Println(terima)
-	
-	now := time.Since(start)
-	fmt.Println(now)
 
 	//soal 4
 	fmt.Println(" ")
